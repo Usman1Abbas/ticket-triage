@@ -20,16 +20,21 @@ def compute_cost(model: str, input_tokens: int, output_tokens: int) -> float:
     return round(cost, 8)
 
 
+_client: instructor.AsyncInstructor | None = None
+
 def get_client() -> instructor.AsyncInstructor:
-    raw_client = AsyncOpenAI(
-        base_url=settings.openrouter_base_url,
-        api_key=settings.openrouter_api_key,
-        default_headers={
-            "HTTP-Referer": settings.site_url,
-            "X-Title": "Ticket Triage MVP",
-        }
-    )
-    return instructor.from_openai(raw_client, mode=instructor.Mode.JSON)
+    global _client
+    if _client is None:
+        raw_client = AsyncOpenAI(
+            base_url=settings.openrouter_base_url,
+            api_key=settings.openrouter_api_key,
+            default_headers={
+                "HTTP-Referer": settings.site_url,
+                "X-Title": "Ticket Triage MVP",
+            }
+        )
+        _client = instructor.from_openai(raw_client, mode=instructor.Mode.JSON)
+    return _client
 
 
 async def llm_call(
@@ -57,6 +62,4 @@ async def llm_call(
         cost = compute_cost(model, input_tokens, output_tokens)
         return result, input_tokens, output_tokens, cost
     except Exception:
-        # Exhausted retries or API error — return zero-confidence sentinel
-        sentinel = response_model.model_construct(confidence=0.0)
-        return sentinel, 0, 0, 0.0
+        raise
