@@ -7,3 +7,9 @@ chroma_db/
 .next/
 node_modules/
 .vercel/
+**/chroma_db/
+.env.local
+.env.production
+.pytest_cache/
+*.log
+.DS_Store
