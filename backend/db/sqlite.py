@@ -60,6 +60,8 @@ class Database:
             conn.commit()
 
     def update_ticket(self, ticket: Ticket):
+        # Caller must pass a fully-hydrated Ticket — any None nested object will NULL
+        # out that group's columns. Always re-fetch from DB before calling if in doubt.
         c = ticket.classification
         d = ticket.draft
         tr = ticket.trace
@@ -139,18 +141,18 @@ class Database:
             """).fetchone()
 
             model_rows = conn.execute("""
-                SELECT classification_model as model, SUM(classification_cost_usd) as cost
-                FROM tickets WHERE classification_model IS NOT NULL
-                GROUP BY classification_model
-                UNION ALL
-                SELECT draft_model as model, SUM(draft_cost_usd) as cost
-                FROM tickets WHERE draft_model IS NOT NULL
-                GROUP BY draft_model
+                SELECT model, SUM(cost) as total_cost FROM (
+                    SELECT classification_model as model, classification_cost_usd as cost
+                    FROM tickets WHERE classification_model IS NOT NULL
+                    UNION ALL
+                    SELECT draft_model as model, draft_cost_usd as cost
+                    FROM tickets WHERE draft_model IS NOT NULL
+                ) GROUP BY model
             """).fetchall()
 
         total = row["total"] or 0
         auto_drafted = row["auto_drafted"] or 0
-        cost_by_model = {r["model"]: round(r["cost"] or 0, 6) for r in model_rows}
+        cost_by_model = {r["model"]: round(r["total_cost"] or 0, 6) for r in model_rows}
 
         return MetricsResponse(
             total_tickets=total,
