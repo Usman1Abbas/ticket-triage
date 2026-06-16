@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="380" viewBox="0 0 1200 380" role="img" aria-label="Ticket Triage — structured LLM triage for support tickets">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d1b2a"/>
+      <stop offset="0.55" stop-color="#125a4d"/>
+      <stop offset="1" stop-color="#1b9c85"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.82" cy="0.25" r="0.6">
+      <stop offset="0" stop-color="#e9c46a" stop-opacity="0.35"/>
+      <stop offset="1" stop-color="#e9c46a" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="380" rx="20" fill="url(#bg)"/>
+  <rect width="1200" height="380" rx="20" fill="url(#glow)"/>
+
+  <!-- MOTIF: support ticket fed into sorting / routing arrows -->
+  <g transform="translate(980,190)" stroke="#e9c46a" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round" opacity="0.92">
+    <!-- ticket stub with notched edge -->
+    <path d="M -120 -60 H -20 a14 14 0 0 1 14 14 a16 16 0 0 0 0 32 a14 14 0 0 1 -14 14 H -120 a14 14 0 0 1 -14 -14 a16 16 0 0 0 0 -32 a14 14 0 0 1 14 -14 Z"/>
+    <line x1="-110" y1="-30" x2="-40" y2="-30"/>
+    <line x1="-110" y1="0" x2="-50" y2="0"/>
+    <line x1="-110" y1="30" x2="-70" y2="30"/>
+    <!-- routing fork: one inbound line splitting into three sorted outputs -->
+    <line x1="20" y1="0" x2="60" y2="0"/>
+    <path d="M 60 0 L 100 -55 L 134 -55"/>
+    <path d="M 60 0 L 100 0 L 134 0"/>
+    <path d="M 60 0 L 100 55 L 134 55"/>
+    <!-- arrowheads -->
+    <path d="M 124 -65 L 138 -55 L 124 -45"/>
+    <path d="M 124 -10 L 138 0 L 124 10"/>
+    <path d="M 124 45 L 138 55 L 124 65"/>
+  </g>
+
+  <!-- wordmark -->
+  <text x="80" y="160" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="78" font-weight="800" fill="#ffffff">Ticket Triage</text>
+  <text x="84" y="232" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="30" fill="#e9c46a">classify · draft · route — as validated JSON</text>
+  <text x="84" y="288" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="24" fill="#dcefe9">A two-stage LLM pipeline that turns raw support tickets into structured triage decisions.</text>
+  <text x="84" y="324" font-family="Segoe UI, Helvetica, Arial, sans-serif" font-size="20" fill="#9ec9bf">Python · Instructor · OpenRouter · Pydantic · SQLite · pytest</text>
+</svg>
